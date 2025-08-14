@@ -96,3 +96,10 @@ def text_to_textnodes(text: str) -> list:
     # Remove empty text nodes
     nodes = [n for n in nodes if not (n.text_type == TextType.TEXT and n.text == "")]
     return nodes
+
+def markdown_to_blocks(markdown: str) -> list:
+    """
+    Splits a markdown document into blocks separated by double newlines. Strips whitespace and removes empty blocks.
+    """
+    blocks = [block.strip() for block in markdown.split("\n\n")]
+    return [block for block in blocks if block]
