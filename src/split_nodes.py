@@ -81,3 +81,18 @@ def split_nodes_link(old_nodes: list) -> list:
         if idx < len(text):
             new_nodes.append(TextNode(text[idx:], TextType.TEXT))
     return new_nodes
+
+def text_to_textnodes(text: str) -> list:
+    """
+    Converts markdown text to a list of TextNode objects, handling bold, italic, code, images, and links.
+    """
+    nodes = [TextNode(text, TextType.TEXT)]
+    # Order: images, links, code, bold, italic
+    nodes = split_nodes_image(nodes)
+    nodes = split_nodes_link(nodes)
+    nodes = split_nodes_delimiter(nodes, "`", TextType.CODE)
+    nodes = split_nodes_delimiter(nodes, "**", TextType.BOLD)
+    nodes = split_nodes_delimiter(nodes, "_", TextType.ITALIC)
+    # Remove empty text nodes
+    nodes = [n for n in nodes if not (n.text_type == TextType.TEXT and n.text == "")]
+    return nodes
